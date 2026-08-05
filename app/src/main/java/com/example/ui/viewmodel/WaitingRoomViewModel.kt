@@ -8,8 +8,11 @@ import com.example.data.IdeaRepository
 import com.example.data.Note
 import com.example.data.ArchivedIdeaWithNoteCount
 import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.StateFlow
+import kotlinx.coroutines.flow.asStateFlow
+import kotlinx.coroutines.flow.combine
 import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.launch
 
@@ -68,6 +71,25 @@ class WaitingRoomViewModel(private val repository: IdeaRepository) : ViewModel()
             started = SharingStarted.WhileSubscribed(5000),
             initialValue = emptyList()
         )
+
+    private val _searchQuery = MutableStateFlow("")
+    val searchQuery: StateFlow<String> = _searchQuery.asStateFlow()
+
+    fun updateSearchQuery(query: String) {
+        _searchQuery.value = query
+    }
+
+    val filteredIdeas: StateFlow<List<Idea>> = combine(allIdeas, _searchQuery) { ideas, query ->
+        if (query.isBlank()) {
+            ideas
+        } else {
+            ideas.filter { it.text.contains(query, ignoreCase = true) }
+        }
+    }.stateIn(
+        scope = viewModelScope,
+        started = SharingStarted.WhileSubscribed(5000),
+        initialValue = emptyList()
+    )
 
     // Reactive StateFlow for archived completed ideas
     val archivedIdeas: StateFlow<List<ArchivedIdeaWithNoteCount>> = repository.archivedIdeas

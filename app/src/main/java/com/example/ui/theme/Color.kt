@@ -2,11 +2,19 @@ package com.example.ui.theme
 
 import androidx.compose.ui.graphics.Color
 
+// Mockup Palette
+val ReceptionGreen = Color(0xFFA8B69A)
+val WarmSand = Color(0xFFEDE6D5)
+val ReceptionBackground = Color(0xFFF7F3EA)
+val MutedBeige = Color(0xFFD9D4C7)
+val SoftBlue = Color(0xFFAEC6D8)
+val SageText = Color(0xFF6B7E6E)
+
 // Light Cream & Sage theme
-val CreamBackgroundLight = Color(0xFFFAF6EE)
+val CreamBackgroundLight = ReceptionBackground
 val CreamSurfaceLight = Color(0xFFF3EBE0)
-val SagePrimaryLight = Color(0xFF4F6652)
-val SageSecondaryLight = Color(0xFF6B7E6E)
+val SagePrimaryLight = ReceptionGreen
+val SageSecondaryLight = SageText
 val SageTertiaryLight = Color(0xFF869989)
 val OnCreamTextLight = Color(0xFF2C322D)
 

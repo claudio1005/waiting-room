@@ -24,7 +24,23 @@ import androidx.compose.material3.OutlinedTextFieldDefaults
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.SnackbarHost
 import androidx.compose.material3.SnackbarHostState
+import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.fillMaxHeight
+import androidx.compose.foundation.layout.size
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.ChevronRight
+import androidx.compose.material.icons.filled.Lightbulb
+import androidx.compose.material.icons.filled.Mic
+import androidx.compose.material3.Icon
+import androidx.compose.material3.IconButton
+import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
+import com.example.ui.theme.ReceptionBackground
+import com.example.ui.theme.ReceptionGreen
+import com.example.ui.theme.WarmSand
+import com.example.ui.theme.MutedBeige
+import com.example.ui.theme.SageText
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
@@ -45,168 +61,169 @@ import com.example.ui.viewmodel.WaitingRoomViewModel
 import kotlinx.coroutines.launch
 
 /**
- * A beautiful, minimal vector illustration of a quiet waiting room.
- * Suggests a peaceful space with a floor line, a sage-green door,
- * a small wooden mid-century modern table, and a potted leafy plant.
+ * A beautiful, detailed vector illustration of a quiet reception area.
+ * Matches the mockup with a hanging lamp, botanical print, console table,
+ * potted plants, and an olive-green door.
  */
 @Composable
-fun WaitingRoomIllustration(
+fun ReceptionRoomIllustration(
     modifier: Modifier = Modifier
 ) {
     val isDark = isSystemInDarkTheme()
     
-    // Aesthetic quiet-room palette
-    val wallLineColor = if (isDark) Color(0xFF384039) else Color(0xFFDFD8CD)
-    val doorColor = if (isDark) Color(0xFF6B7E6E) else Color(0xFF4F6652)
-    val doorKnobColor = if (isDark) Color(0xFFD4AF37) else Color(0xFFC5A059)
-    val tableColor = if (isDark) Color(0xFF6D5A50) else Color(0xFF8A7060)
-    val leafColor = if (isDark) Color(0xFFA5BFA9) else Color(0xFF6B7E6E)
-    val potColor = if (isDark) Color(0xFF4E3D35) else Color(0xFFB09586)
+    // Palette based on mockup
+    val floorColor = if (isDark) Color(0xFF384039) else MutedBeige
+    val doorColor = if (isDark) Color(0xFF8B9D8F) else ReceptionGreen
+    val woodColor = if (isDark) Color(0xFF6D5A50) else WarmSand
+    val leafColor = if (isDark) Color(0xFFA5BFA9) else SageText
+    val lampColor = if (isDark) Color(0xFFE2E4E2) else WarmSand
+    val frameColor = if (isDark) Color(0xFF4E3D35) else WarmSand
 
     Canvas(
         modifier = modifier
             .fillMaxWidth()
-            .height(140.dp)
+            .height(280.dp)
     ) {
         val width = size.width
         val height = size.height
         
         // Floor baseline
-        val floorY = height * 0.85f
+        val floorY = height * 0.95f
         drawLine(
-            color = wallLineColor,
+            color = floorColor,
             start = androidx.compose.ui.geometry.Offset(0f, floorY),
             end = androidx.compose.ui.geometry.Offset(width, floorY),
             strokeWidth = 2.dp.toPx()
         )
 
-        // Stylized green door (sage accents)
-        val doorWidth = 44.dp.toPx()
-        val doorHeight = 94.dp.toPx()
-        val doorX = width * 0.28f
+        // --- Door (Right side) ---
+        val doorWidth = 60.dp.toPx()
+        val doorHeight = 160.dp.toPx()
+        val doorX = width * 0.7f
         val doorY = floorY - doorHeight
         
+        // Door body
         drawRoundRect(
             color = doorColor,
             topLeft = androidx.compose.ui.geometry.Offset(doorX, doorY),
             size = androidx.compose.ui.geometry.Size(doorWidth, doorHeight),
-            cornerRadius = androidx.compose.ui.geometry.CornerRadius(6.dp.toPx(), 6.dp.toPx())
+            cornerRadius = androidx.compose.ui.geometry.CornerRadius(4.dp.toPx(), 4.dp.toPx())
         )
         
-        // Door frame highlight
-        drawRoundRect(
-            color = wallLineColor,
-            topLeft = androidx.compose.ui.geometry.Offset(doorX, doorY),
-            size = androidx.compose.ui.geometry.Size(doorWidth, doorHeight),
-            cornerRadius = androidx.compose.ui.geometry.CornerRadius(6.dp.toPx(), 6.dp.toPx()),
-            style = androidx.compose.ui.graphics.drawscope.Stroke(width = 1.dp.toPx())
-        )
-
-        // Delicate gold door knob
+        // Door knob
         drawCircle(
-            color = doorKnobColor,
+            color = Color(0xFFC5A059),
             radius = 3.dp.toPx(),
-            center = androidx.compose.ui.geometry.Offset(doorX + doorWidth - 8.dp.toPx(), doorY + doorHeight * 0.55f)
+            center = androidx.compose.ui.geometry.Offset(doorX + 12.dp.toPx(), doorY + doorHeight * 0.55f)
         )
 
-        // Minimalist wooden table
-        val tableWidth = 54.dp.toPx()
-        val tableHeight = 4.dp.toPx()
-        val tableX = width * 0.56f
-        val tableY = floorY - 34.dp.toPx()
+        // --- Console Table (Left side) ---
+        val tableWidth = 80.dp.toPx()
+        val tableTopHeight = 6.dp.toPx()
+        val tableX = width * 0.15f
+        val tableY = floorY - 60.dp.toPx()
         
-        // Angled wooden table legs
+        // Table Legs
         drawLine(
-            color = tableColor,
-            start = androidx.compose.ui.geometry.Offset(tableX + 8.dp.toPx(), tableY + tableHeight),
-            end = androidx.compose.ui.geometry.Offset(tableX + 4.dp.toPx(), floorY),
-            strokeWidth = 2.dp.toPx()
+            color = woodColor,
+            start = androidx.compose.ui.geometry.Offset(tableX + 10.dp.toPx(), tableY),
+            end = androidx.compose.ui.geometry.Offset(tableX + 5.dp.toPx(), floorY),
+            strokeWidth = 3.dp.toPx()
         )
         drawLine(
-            color = tableColor,
-            start = androidx.compose.ui.geometry.Offset(tableX + tableWidth - 8.dp.toPx(), tableY + tableHeight),
-            end = androidx.compose.ui.geometry.Offset(tableX + tableWidth - 4.dp.toPx(), floorY),
-            strokeWidth = 2.dp.toPx()
+            color = woodColor,
+            start = androidx.compose.ui.geometry.Offset(tableX + tableWidth - 10.dp.toPx(), tableY),
+            end = androidx.compose.ui.geometry.Offset(tableX + tableWidth - 5.dp.toPx(), floorY),
+            strokeWidth = 3.dp.toPx()
         )
         
-        // Elegant tabletop
+        // Table Top
         drawRoundRect(
-            color = tableColor,
+            color = woodColor,
             topLeft = androidx.compose.ui.geometry.Offset(tableX, tableY),
-            size = androidx.compose.ui.geometry.Size(tableWidth, tableHeight),
+            size = androidx.compose.ui.geometry.Size(tableWidth, tableTopHeight),
             cornerRadius = androidx.compose.ui.geometry.CornerRadius(2.dp.toPx(), 2.dp.toPx())
         )
 
-        // Small clay ceramic pot
-        val potWidth = 14.dp.toPx()
-        val potHeight = 12.dp.toPx()
-        val potX = tableX + (tableWidth - potWidth) / 2f
+        // --- Plant on Table ---
+        val potX = tableX + tableWidth * 0.3f
+        val potWidth = 12.dp.toPx()
+        val potHeight = 10.dp.toPx()
         val potY = tableY - potHeight
         
-        val potPath = androidx.compose.ui.graphics.Path().apply {
-            moveTo(potX, potY)
-            lineTo(potX + potWidth, potY)
-            lineTo(potX + potWidth - 2.dp.toPx(), potY + potHeight)
-            lineTo(potX + 2.dp.toPx(), potY + potHeight)
-            close()
-        }
-        drawPath(
-            path = potPath,
-            color = potColor
+        drawRect(
+            color = woodColor,
+            topLeft = androidx.compose.ui.geometry.Offset(potX, potY),
+            size = androidx.compose.ui.geometry.Size(potWidth, potHeight)
+        )
+        
+        // Leaves
+        drawCircle(color = leafColor, radius = 6.dp.toPx(), center = androidx.compose.ui.geometry.Offset(potX + 4.dp.toPx(), potY - 4.dp.toPx()))
+        drawCircle(color = leafColor, radius = 5.dp.toPx(), center = androidx.compose.ui.geometry.Offset(potX + potWidth - 2.dp.toPx(), potY - 6.dp.toPx()))
+
+        // --- Framed Botanical Print ---
+        val frameWidth = 40.dp.toPx()
+        val frameHeight = 55.dp.toPx()
+        val frameX = tableX + (tableWidth - frameWidth) / 2
+        val frameY = tableY - 110.dp.toPx()
+        
+        drawRect(
+            color = frameColor,
+            topLeft = androidx.compose.ui.geometry.Offset(frameX, frameY),
+            size = androidx.compose.ui.geometry.Size(frameWidth, frameHeight),
+            style = androidx.compose.ui.graphics.drawscope.Stroke(width = 2.dp.toPx())
+        )
+        
+        // Simple leaf inside frame
+        drawCircle(
+            color = leafColor.copy(alpha = 0.6f),
+            radius = 8.dp.toPx(),
+            center = androidx.compose.ui.geometry.Offset(frameX + frameWidth/2, frameY + frameHeight/2)
         )
 
-        // Sage-green plant leaves curving gracefully
-        val plantBaseX = potX + potWidth / 2f
-        val plantBaseY = potY
+        // --- Hanging Lamp ---
+        val lampX = frameX + frameWidth / 2
+        val lampDomeRadius = 15.dp.toPx()
+        val lampY = frameY - 60.dp.toPx()
         
-        // Leaf 1
-        val leaf1Path = androidx.compose.ui.graphics.Path().apply {
-            moveTo(plantBaseX, plantBaseY)
-            quadraticTo(
-                plantBaseX - 12.dp.toPx(), plantBaseY - 10.dp.toPx(),
-                plantBaseX - 16.dp.toPx(), plantBaseY - 8.dp.toPx()
-            )
-            quadraticTo(
-                plantBaseX - 10.dp.toPx(), plantBaseY - 4.dp.toPx(),
-                plantBaseX, plantBaseY
-            )
-        }
-        drawPath(path = leaf1Path, color = leafColor)
+        // Lamp wire
+        drawLine(
+            color = frameColor,
+            start = androidx.compose.ui.geometry.Offset(lampX, 0f),
+            end = androidx.compose.ui.geometry.Offset(lampX, lampY),
+            strokeWidth = 1.dp.toPx()
+        )
+        
+        // Lamp dome
+        drawArc(
+            color = lampColor,
+            startAngle = 180f,
+            sweepAngle = 180f,
+            useCenter = true,
+            topLeft = androidx.compose.ui.geometry.Offset(lampX - lampDomeRadius, lampY),
+            size = androidx.compose.ui.geometry.Size(lampDomeRadius * 2, lampDomeRadius * 2)
+        )
 
-        // Leaf 2
-        val leaf2Path = androidx.compose.ui.graphics.Path().apply {
-            moveTo(plantBaseX, plantBaseY)
-            quadraticTo(
-                plantBaseX + 14.dp.toPx(), plantBaseY - 14.dp.toPx(),
-                plantBaseX + 20.dp.toPx(), plantBaseY - 10.dp.toPx()
-            )
-            quadraticTo(
-                plantBaseX + 12.dp.toPx(), plantBaseY - 2.dp.toPx(),
-                plantBaseX, plantBaseY
-            )
-        }
-        drawPath(path = leaf2Path, color = leafColor)
-
-        // Leaf 3
-        val leaf3Path = androidx.compose.ui.graphics.Path().apply {
-            moveTo(plantBaseX, plantBaseY)
-            quadraticTo(
-                plantBaseX - 4.dp.toPx(), plantBaseY - 18.dp.toPx(),
-                plantBaseX - 2.dp.toPx(), plantBaseY - 22.dp.toPx()
-            )
-            quadraticTo(
-                plantBaseX + 4.dp.toPx(), plantBaseY - 12.dp.toPx(),
-                plantBaseX, plantBaseY
-            )
-        }
-        drawPath(path = leaf3Path, color = leafColor)
+        // --- Plant on Floor (Right) ---
+        val floorPlantX = width * 0.88f
+        val floorPotWidth = 16.dp.toPx()
+        val floorPotHeight = 14.dp.toPx()
+        val floorPotY = floorY - floorPotHeight
+        
+        drawRect(
+            color = woodColor,
+            topLeft = androidx.compose.ui.geometry.Offset(floorPlantX, floorPotY),
+            size = androidx.compose.ui.geometry.Size(floorPotWidth, floorPotHeight)
+        )
+        
+        // Tall leaves
+        drawLine(color = leafColor, start = androidx.compose.ui.geometry.Offset(floorPlantX + 8.dp.toPx(), floorPotY), end = androidx.compose.ui.geometry.Offset(floorPlantX + 4.dp.toPx(), floorPotY - 30.dp.toPx()), strokeWidth = 4.dp.toPx())
+        drawLine(color = leafColor, start = androidx.compose.ui.geometry.Offset(floorPlantX + 8.dp.toPx(), floorPotY), end = androidx.compose.ui.geometry.Offset(floorPlantX + 14.dp.toPx(), floorPotY - 25.dp.toPx()), strokeWidth = 3.dp.toPx())
     }
 }
 
 /**
- * The Reception Home Screen, redesigned for a calm, quiet, warm, and highly spacious experience.
- * Inspired by modern minimal interior spaces, it leverages a warm cream background,
- * generous breathing room, sage accents, and a clean stylized room illustration.
+ * The Reception Home Screen, redesigned to match the mockup.
  */
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -215,13 +232,8 @@ fun WaitingRoomScreen(
     onNavigateToWaitingRoomList: () -> Unit,
     modifier: Modifier = Modifier
 ) {
-    // Collect persistent ideas count reactively from Room DB flow
     val ideasCount by viewModel.ideasCount.collectAsStateWithLifecycle()
-    
-    // Local input field state
     var ideaText by remember { mutableStateOf("") }
-    
-    // Save button enabled only with non-blank text
     val isButtonEnabled = ideaText.trim().isNotEmpty()
 
     val snackbarHostState = remember { SnackbarHostState() }
@@ -230,7 +242,7 @@ fun WaitingRoomScreen(
     Scaffold(
         modifier = modifier.fillMaxSize(),
         snackbarHost = { SnackbarHost(hostState = snackbarHostState) },
-        containerColor = MaterialTheme.colorScheme.background,
+        containerColor = ReceptionBackground,
         contentWindowInsets = WindowInsets(0, 0, 0, 0)
     ) { innerPadding ->
         Column(
@@ -238,161 +250,160 @@ fun WaitingRoomScreen(
                 .fillMaxSize()
                 .padding(innerPadding)
                 .verticalScroll(rememberScrollState())
-                .padding(horizontal = 28.dp, vertical = 24.dp),
-            horizontalAlignment = Alignment.CenterHorizontally,
-            verticalArrangement = Arrangement.SpaceBetween
+                .padding(horizontal = 24.dp, vertical = 16.dp),
+            horizontalAlignment = Alignment.CenterHorizontally
         ) {
-            // Upper Section: Branding, Quiet Room Illustration, and Core Input Controls
-            Column(
-                horizontalAlignment = Alignment.CenterHorizontally,
-                modifier = Modifier.fillMaxWidth()
+            // Detailed room illustration
+            ReceptionRoomIllustration(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .padding(bottom = 24.dp)
+            )
+
+            // Centered Title
+            Text(
+                text = "Waiting Room",
+                style = MaterialTheme.typography.displayMedium.copy(
+                    fontWeight = FontWeight.Normal,
+                    fontSize = 32.sp,
+                    letterSpacing = (-0.5).sp
+                ),
+                color = Color.Black,
+                textAlign = TextAlign.Center
+            )
+
+            // Centered Subtitle
+            Text(
+                text = "Le idee possono aspettare.",
+                style = MaterialTheme.typography.bodyLarge.copy(
+                    fontStyle = FontStyle.Italic,
+                    color = SageText
+                ),
+                textAlign = TextAlign.Center,
+                modifier = Modifier.padding(top = 8.dp, bottom = 32.dp)
+            )
+
+            // Input Card
+            Surface(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .height(160.dp),
+                shape = RoundedCornerShape(24.dp),
+                color = Color.White,
+                shadowElevation = 2.dp
             ) {
-                // Calm Hero Illustration area inspired by the quiet waiting room concept
-                WaitingRoomIllustration(
-                    modifier = Modifier
-                        .fillMaxWidth(0.9f)
-                        .padding(vertical = 12.dp)
-                )
-
-                Spacer(modifier = Modifier.height(16.dp))
-
-                // Beautiful, generous display title
-                Text(
-                    text = "Waiting Room",
-                    style = MaterialTheme.typography.displayMedium.copy(
-                        fontWeight = FontWeight.Light,
-                        fontSize = 38.sp,
-                        letterSpacing = (-0.5).sp
-                    ),
-                    color = MaterialTheme.colorScheme.primary,
-                    textAlign = TextAlign.Center
-                )
-
-                Spacer(modifier = Modifier.height(6.dp))
-
-                // Minimalist poetic subtitle
-                Text(
-                    text = "Le idee possono aspettare.",
-                    style = MaterialTheme.typography.bodyLarge.copy(
-                        fontStyle = FontStyle.Italic,
-                        letterSpacing = 0.5.sp
-                    ),
-                    color = MaterialTheme.colorScheme.secondary,
-                    textAlign = TextAlign.Center
-                )
-
-                Spacer(modifier = Modifier.height(40.dp))
-
-                // Multiline Input Text Field with clean rounded corners
-                OutlinedTextField(
-                    value = ideaText,
-                    onValueChange = { ideaText = it },
-                    placeholder = {
-                        Text(
-                            text = "Cosa ti è venuto in mente?",
-                            style = MaterialTheme.typography.bodyLarge,
-                            color = MaterialTheme.colorScheme.secondary.copy(alpha = 0.6f)
-                        )
-                    },
-                    modifier = Modifier
-                        .fillMaxWidth()
-                        .height(140.dp)
-                        .testTag("idea_input"),
-                    shape = RoundedCornerShape(20.dp),
-                    textStyle = MaterialTheme.typography.bodyLarge,
-                    colors = OutlinedTextFieldDefaults.colors(
-                        focusedBorderColor = MaterialTheme.colorScheme.primary,
-                        unfocusedBorderColor = MaterialTheme.colorScheme.secondary.copy(alpha = 0.35f),
-                        cursorColor = MaterialTheme.colorScheme.primary,
-                        focusedContainerColor = MaterialTheme.colorScheme.surface,
-                        unfocusedContainerColor = MaterialTheme.colorScheme.surface,
-                    ),
-                    minLines = 4,
-                    maxLines = 6
-                )
-
-                Spacer(modifier = Modifier.height(24.dp))
-
-                // Primary Save Button
-                Button(
-                    onClick = {
-                        viewModel.saveIdea(ideaText) {
-                            ideaText = "" // Clean input field
-                            coroutineScope.launch {
-                                snackbarHostState.showSnackbar("La tua idea è al sicuro.")
+                Box(modifier = Modifier.padding(20.dp)) {
+                    androidx.compose.foundation.text.BasicTextField(
+                        value = ideaText,
+                        onValueChange = { ideaText = it },
+                        modifier = Modifier
+                            .fillMaxSize()
+                            .testTag("idea_input"),
+                        textStyle = MaterialTheme.typography.bodyLarge.copy(color = Color.Black),
+                        decorationBox = { innerTextField ->
+                            if (ideaText.isEmpty()) {
+                                Text(
+                                    text = "Cosa ti è venuto in mente?",
+                                    style = MaterialTheme.typography.bodyLarge,
+                                    color = Color.Gray.copy(alpha = 0.6f)
+                                )
                             }
+                            innerTextField()
                         }
-                    },
-                    enabled = isButtonEnabled,
-                    modifier = Modifier
-                        .fillMaxWidth()
-                        .height(56.dp)
-                        .testTag("conserva_button"),
-                    shape = RoundedCornerShape(28.dp),
-                    colors = ButtonDefaults.buttonColors(
-                        containerColor = MaterialTheme.colorScheme.primary,
-                        contentColor = MaterialTheme.colorScheme.onPrimary,
-                        disabledContainerColor = MaterialTheme.colorScheme.secondary.copy(alpha = 0.18f),
-                        disabledContentColor = MaterialTheme.colorScheme.onBackground.copy(alpha = 0.3f)
-                    ),
-                    elevation = ButtonDefaults.buttonElevation(
-                        defaultElevation = 1.dp,
-                        pressedElevation = 3.dp
                     )
-                ) {
-                    Text(
-                        text = "Conserva",
-                        style = MaterialTheme.typography.labelLarge.copy(
-                            fontWeight = FontWeight.Bold,
-                            fontSize = 16.sp,
-                            letterSpacing = 1.2.sp
-                        )
+                    
+                    Icon(
+                        imageVector = Icons.Default.Mic,
+                        contentDescription = "Dettatura vocale",
+                        tint = Color.Black.copy(alpha = 0.4f),
+                        modifier = Modifier
+                            .align(Alignment.BottomEnd)
+                            .size(24.dp)
                     )
                 }
             }
 
-            // Bottom Section: Dynamic Counter Card linking to Waiting Room List Screen
-            Column(
-                horizontalAlignment = Alignment.CenterHorizontally,
+            Spacer(modifier = Modifier.height(24.dp))
+
+            // Conserva Button
+            Button(
+                onClick = {
+                    viewModel.saveIdea(ideaText) {
+                        ideaText = ""
+                        coroutineScope.launch {
+                            snackbarHostState.showSnackbar("La tua idea è al sicuro.")
+                        }
+                    }
+                },
+                enabled = isButtonEnabled,
                 modifier = Modifier
                     .fillMaxWidth()
-                    .padding(top = 48.dp)
+                    .height(56.dp)
+                    .testTag("conserva_button"),
+                shape = RoundedCornerShape(28.dp),
+                colors = ButtonDefaults.buttonColors(
+                    containerColor = ReceptionGreen,
+                    contentColor = Color.White,
+                    disabledContainerColor = ReceptionGreen.copy(alpha = 0.3f),
+                    disabledContentColor = Color.White.copy(alpha = 0.6f)
+                )
             ) {
-                val counterText = if (ideasCount == 1) {
-                    "1 idea in attesa"
-                } else {
-                    "$ideasCount idee in attesa"
-                }
-
-                Card(
-                    onClick = onNavigateToWaitingRoomList,
-                    modifier = Modifier
-                        .fillMaxWidth(0.85f)
-                        .testTag("ideas_counter_card"),
-                    shape = RoundedCornerShape(20.dp),
-                    colors = CardDefaults.cardColors(
-                        containerColor = MaterialTheme.colorScheme.surface,
-                        contentColor = MaterialTheme.colorScheme.onSurface
-                    ),
-                    elevation = CardDefaults.cardElevation(
-                        defaultElevation = 0.5.dp
+                Text(
+                    text = "Conserva",
+                    style = MaterialTheme.typography.labelLarge.copy(
+                        fontWeight = FontWeight.Bold,
+                        fontSize = 16.sp
                     )
+                )
+            }
+
+            Spacer(modifier = Modifier.height(48.dp))
+
+            // Bottom Navigation Card
+            Card(
+                onClick = onNavigateToWaitingRoomList,
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .testTag("ideas_counter_card"),
+                shape = RoundedCornerShape(20.dp),
+                colors = CardDefaults.cardColors(
+                    containerColor = Color.White,
+                    contentColor = Color.Black
+                ),
+                elevation = CardDefaults.cardElevation(defaultElevation = 1.dp)
+            ) {
+                Row(
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .padding(20.dp),
+                    verticalAlignment = Alignment.CenterVertically,
+                    horizontalArrangement = Arrangement.spacedBy(16.dp)
                 ) {
-                    Column(
-                        modifier = Modifier
-                            .fillMaxWidth()
-                            .padding(vertical = 18.dp, horizontal = 24.dp),
-                        horizontalAlignment = Alignment.CenterHorizontally
-                    ) {
+                    Icon(
+                        imageVector = Icons.Default.Lightbulb,
+                        contentDescription = null,
+                        tint = Color.Black.copy(alpha = 0.7f),
+                        modifier = Modifier.size(28.dp)
+                    )
+                    
+                    Column(modifier = Modifier.weight(1f)) {
+                        Text(
+                            text = "Waiting Room",
+                            style = MaterialTheme.typography.bodyLarge.copy(fontWeight = FontWeight.Bold)
+                        )
+                        val counterText = if (ideasCount == 1) "1 idea in attesa" else "$ideasCount idee in attesa"
                         Text(
                             text = counterText,
-                            style = MaterialTheme.typography.bodyMedium.copy(
-                                fontWeight = FontWeight.Bold,
-                                letterSpacing = 0.5.sp
-                            ),
-                            color = MaterialTheme.colorScheme.primary
+                            style = MaterialTheme.typography.bodySmall,
+                            color = Color.Gray
                         )
                     }
+                    
+                    Icon(
+                        imageVector = Icons.Default.ChevronRight,
+                        contentDescription = null,
+                        tint = Color.Gray
+                    )
                 }
             }
         }

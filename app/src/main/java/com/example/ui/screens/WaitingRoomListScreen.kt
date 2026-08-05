@@ -92,8 +92,8 @@ fun WaitingRoomListScreen(
     onNavigateToArchive: () -> Unit,
     modifier: Modifier = Modifier
 ) {
-    // Observe all ideas reactively from the database (sorted newest first)
-    val ideas by viewModel.allIdeas.collectAsStateWithLifecycle()
+    // Observe filtered ideas reactively from the database
+    val ideas by viewModel.filteredIdeas.collectAsStateWithLifecycle()
 
     val dateFormatter = remember { SimpleDateFormat("dd/MM/yyyy", Locale.ITALIAN) }
     val timeFormatter = remember { SimpleDateFormat("HH:mm", Locale.ITALIAN) }
@@ -217,10 +217,10 @@ fun WaitingRoomListScreen(
             Spacer(modifier = Modifier.weight(0.12f)) // Balanced spacing at bottom for vertical centering
 
             // Visual-only search field near the bottom
-            var searchQuery by remember { mutableStateOf("") }
+            val searchQuery by viewModel.searchQuery.collectAsStateWithLifecycle()
             OutlinedTextField(
                 value = searchQuery,
-                onValueChange = { searchQuery = it },
+                onValueChange = { viewModel.updateSearchQuery(it) },
                 modifier = Modifier
                     .fillMaxWidth()
                     .padding(horizontal = 24.dp)

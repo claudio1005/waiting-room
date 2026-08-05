@@ -1,0 +1,6 @@
+- [x] Research existing project resources and theme tokens
+- [x] Create implementation plan
+- [x] Define new mockup-specific colors in `Color.kt`
+- [x] Implement detailed `ReceptionRoomIllustration` using `Canvas`
+- [x] Redesign `WaitingRoomScreen` layout and components
+- [x] Verify build and functionality
